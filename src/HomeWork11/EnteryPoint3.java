@@ -7,35 +7,34 @@ public class EnteryPoint3 {
     public static void main(String[] args) throws SQLException {
 
         DataBaseOperations dataBaseOperations = new DataBaseOperations();
-        ShopHandler shopHandler = new ShopHandler();
-        OrderHandler orderHandler = new OrderHandler();
         Scanner sc = new Scanner(System.in);
 
         try {
-            dataBaseOperations.getConnectionUser();
-            shopHandler.getConnectionShop();
-            orderHandler.getConnectionOrder();
+            dataBaseOperations.getConnection();
             System.out.println("Hello.\nType 'It`s end of world' to delete all information from tables.\nType '1' to get in our shop to buy some things.\nType '2' create new product.");
             String ch = sc.nextLine();
             switch (ch) {
-                case /*"It`s end of world"*/"0":
-                    //dataBaseOperations.createUsersTable();
-                    //shopHandler.createShopTable();
-                    orderHandler.createOrderTable();
+                case "It`s end of world":
+                    dataBaseOperations.createUsersTable();
+                    dataBaseOperations.createShopTable();
+                    dataBaseOperations.createOrderTable();
                     break;
                 case "1":
                     System.out.println("Hello.\n1: to login.\n2: to create new account.");
                     switch (sc.nextLine()) {
                         case "1":
-                            shopHandler.showProducts();
                             System.out.println("Please enter your email.");
-                            orderHandler.orderHandler(dataBaseOperations.logInSystem(sc.nextLine()));
-
+                            String logInSystem = dataBaseOperations.logInSystem(sc.nextLine());
+                            dataBaseOperations.showProducts();
+                            dataBaseOperations.orderHandler(logInSystem);
+                            dataBaseOperations.close();
                             break;
                         case "2":
-                            shopHandler.showProducts();
                             System.out.println("Please enter your email.");
-                            orderHandler.orderHandler(dataBaseOperations.createUser(sc.nextLine()));
+                            String user = dataBaseOperations.createUser(sc.nextLine());
+                            dataBaseOperations.showProducts();
+                            dataBaseOperations.orderHandler(user);
+                            dataBaseOperations.close();
                             break;
                         default:
                             System.out.println("WRONG!");
@@ -47,17 +46,20 @@ public class EnteryPoint3 {
                 case "2":
                     System.out.println("Please enter identification number of product.");
                     Integer i = sc.nextInt();
-                    shopHandler.createProduct(i);
+                    dataBaseOperations.createProduct(i);
+                    dataBaseOperations.close();
                     break;
                 default:
-                    IllegalArgumentException e = new IllegalArgumentException();
                     System.out.println("Not found options for your command.");
-                    throw e;
+                    dataBaseOperations.close();
+                    throw new IllegalArgumentException();
             }
         } catch (ClassNotFoundException e) {
             System.out.println("SQLITE library is not in ClassPass. Reason: " + e.getMessage());
+            e.getStackTrace();
         } catch (SQLException e) {
             System.out.println("Failed in establish connection. Reason: " + e.getMessage());
+            e.getStackTrace();
         }
     }
 }
