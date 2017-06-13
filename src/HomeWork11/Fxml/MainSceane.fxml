@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root minHeight="400.0" minWidth="600.0" snapToPixel="false" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeWork11.Controllers.MainSceane">
+<AnchorPane minHeight="400.0" minWidth="600.0" snapToPixel="false"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeWork11.Controllers.MainSceane">
    <children>
       <HBox fx:id="labelHello" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="570.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
@@ -61,4 +61,4 @@
          </children>
       </HBox>
    </children>
-</fx:root>
+</AnchorPane>

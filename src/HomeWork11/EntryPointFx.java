@@ -13,7 +13,7 @@ public class EntryPointFx extends Application {
 
         primaryStage.setTitle("Hello World");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("MainSceane.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("Fxml/MainSceane.fxml"));
 
         Pane pane = (Pane)fxmlLoader.load();
         Scene scene = new Scene(pane);

@@ -2,11 +2,11 @@ package HomeWork11.System;
 
 
 import HomeWork11.Entity.Bill;
-import HomeWork11.Entity.LogInUser;
 import HomeWork11.Entity.Product;
-import HomeWork11.Entity.SignInUser;
+import HomeWork11.Entity.User;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.StringJoiner;
 
@@ -17,7 +17,7 @@ public class DBOFX {
     static Scanner sc = new Scanner(System.in);
 
 
-    public static void getConnection() throws ClassNotFoundException, SQLException {
+    public static void createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:db/peapole.sqlite");
         statement = connection.createStatement();
@@ -31,7 +31,7 @@ public class DBOFX {
 
     public static void createUsersTable() throws SQLException {
         statement.executeUpdate("DROP TABLE IF EXISTS user");
-        statement.executeUpdate("CREATE TABLE user(userId INT PRIMARY KEY AUTOINCREMENT, email STRING, password STRING, name STRING, dataOfRegistration String)");
+        statement.executeUpdate("CREATE TABLE user(userId INTEGER PRIMARY KEY AUTOINCREMENT, email STRING UNIQUE , password STRING, name STRING, dataOfRegistration String)");
     }
 
     public static void createProductTable() throws SQLException {
@@ -45,17 +45,17 @@ public class DBOFX {
     }
 
 
-    public static int createUser(SignInUser signInUser) throws SQLException, IllegalArgumentException {
+    public static int createUser(User user) throws SQLException, IllegalArgumentException {
 
         int userId = 0;
 
-        String email = signInUser.getEmail();
+        String email = user.getEmail();
         ResultSet resultSet1 = statement.executeQuery("SELECT email FROM user WHERE email ='" + email + "'");//проверка
         if (resultSet1.next()) {
             System.out.println("You`re already in sign in.");
         } else {
-            String password = signInUser.getPassword();
-            String name = signInUser.getName();
+            String password = user.getPassword();
+            String name = user.getName();
             java.util.Date date = new java.util.Date();
             statement.executeUpdate("INSERT INTO user VALUES('" + email + "', '" + password + "','" + name + "','" + date.toString() + "')");
             StringBuilder stringBuilder = new StringBuilder();
@@ -68,7 +68,7 @@ public class DBOFX {
         return userId;
     }
 
-    public static int logInUser(LogInUser logInUser) throws SQLException, IllegalArgumentException {
+    public static int logInUser(User logInUser) throws SQLException, IllegalArgumentException {
         int userId = 0;
         String email = logInUser.getEmail();
         ResultSet resultSet = statement.executeQuery("SELECT  email FROM user WHERE email ='" + email + "'");
@@ -89,18 +89,17 @@ public class DBOFX {
     }
 
 
-
     public static void createProduct(int userId, Product product) throws SQLException, IllegalArgumentException {
 
         String nameProd = product.getNameProd();
         String descriptionProd = product.getDescriptionProd();
         Double price = product.getPrice();
         java.util.Date date = new java.util.Date();
-        statement.executeUpdate("INSERT INTO product VALUES('"+ nameProd + "','" + descriptionProd + "','" + price + "','" + userId + "','" + date.toString() + "')");
+        statement.executeUpdate("INSERT INTO product VALUES('" + nameProd + "','" + descriptionProd + "','" + price + "','" + userId + "','" + date.toString() + "')");
 
     }
 
-public static void showProducts() throws SQLException {
+    public static void showProducts() throws SQLException {
 
         ResultSet resultSet = statement.executeQuery("SELECT * FROM product");
         StringBuilder stringBuilder = new StringBuilder();
@@ -123,13 +122,23 @@ public static void showProducts() throws SQLException {
         java.util.Date date = new java.util.Date();
         ResultSet resultSet = statement.executeQuery("SELECT  price FROM user WHERE idProduct ='" + productId + "'");
         double price = resultSet.getDouble("price");
-        double total = price*quantity;
+        double total = price * quantity;
 
         statement.executeUpdate("INSERT INTO bill VALUES('" + userId + "', '" + productId + "','" + quantity + "','" + price + "','" + total + "','" + date.toString() + "')");
 
         //idBill INTEGER PRIMARY KEY AUTOINCREMENT, userId INT, idProduct INTEGER, quantity DOUBLE, cost DOUBLE, val DOUBLE, dataOfOrder STRING
 
+    }
 
+    public static boolean insert(final String tableName, final HashMap<String, Object> stringObjectHashMap) {
+
+        try {
+            statement.executeQuery("");
+            return true;
+        } catch (SQLException e) {
+
+            return false;
+        }
 
     }
 }

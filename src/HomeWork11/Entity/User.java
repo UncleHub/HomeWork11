@@ -1,19 +1,16 @@
 package HomeWork11.Entity;
 
 
-public class SignInUser {
+public class User {
 
     String email;
     String password;
     String name;
 
-    @Override
-    public String toString() {
-        return "SignInUser{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    public User(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
     }
 
     public String getEmail() {
@@ -40,10 +37,14 @@ public class SignInUser {
         this.name = name;
     }
 
-    public SignInUser(String email, String password, String name) {
-
-        this.email = email;
-        this.password = password;
-        this.name = name;
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
+
+
 }
