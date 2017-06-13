@@ -1,4 +1,4 @@
-package HomeWork11;
+package HomeWork11.System;
 
 
 import java.sql.*;
@@ -18,28 +18,31 @@ public class DataBaseOperations {
         statement = connection.createStatement();
         System.out.println("You have join to data base of users.");
     }
-    public static void close() throws SQLException{
+
+    public static void close() throws SQLException {
         statement.close();
         connection.close();
     }
 
     public static void createUsersTable() throws SQLException {
-        statement.executeUpdate("DROP TABLE IF EXISTS system");
-        statement.executeUpdate("CREATE TABLE system(email STRING, password STRING, name STRING)");
+        statement.executeUpdate("DROP TABLE IF EXISTS user");
+        statement.executeUpdate("CREATE TABLE user(userId INT PRIMARY KEY AUTOINCREMENT, email STRING, password STRING, name STRING, dataOfRegistration String)");
     }
-    public static void createShopTable() throws SQLException {
+
+    public static void createProductTable() throws SQLException {
         statement.executeUpdate("DROP TABLE IF EXISTS product");
-        statement.executeUpdate("CREATE TABLE product(id INTEGER, name STRING, description STRING, price DOUBLE)");
+        statement.executeUpdate("CREATE TABLE product(idProduct INTEGER PRIMARY KEY AUTOINCREMENT , nameProduct STRING, description STRING, price DOUBLE, userId INT, dataOfCreation STRING)");
     }
-    public static void createOrderTable() throws SQLException {
+
+    public static void createBillTable() throws SQLException {
         statement.executeUpdate("DROP TABLE IF EXISTS bill");
-        statement.executeUpdate("CREATE TABLE bill(id INTEGER, nameUser STRING, nameProduct STRING, quantity DOUBLE, cost DOUBLE, val DOUBLE, data STRING)");
+        statement.executeUpdate("CREATE TABLE bill(idBill INTEGER PRIMARY KEY AUTOINCREMENT, userId INT, idProduct INTEGER, quantity DOUBLE, cost DOUBLE, val DOUBLE, dataOfOrder STRING)");
     }
 
 
-    public static String createUser(String email) throws SQLException, IllegalArgumentException {
+    public static int createUser(String email) throws SQLException, IllegalArgumentException {
 
-        ResultSet resultSet1 = statement.executeQuery("SELECT * FROM system");
+        ResultSet resultSet1 = statement.executeQuery("SELECT * FROM user");
         while (resultSet1.next()) {
             String s = resultSet1.getString("email");
             if (email.equals(s)) {
@@ -51,17 +54,22 @@ public class DataBaseOperations {
         String password = sc.nextLine();
         System.out.println("Please type your name.");
         String userName = sc.nextLine();
+        java.util.Date date = new java.util.Date();
 
-        statement.executeUpdate("INSERT INTO system VALUES('" + email + "', '" + password + "','" + userName + "')");
+
+        statement.executeUpdate("INSERT INTO user VALUES('" + email + "', '" + password + "','" + userName + "','" + date.toString() + "')");
         StringBuilder stringBuilder = new StringBuilder();
         StringJoiner stringJoiner = new StringJoiner("\t\t");
-        stringBuilder.append(stringJoiner.add(email).add(password).add(userName)).append("\n");
+        stringBuilder.append(stringJoiner.add(email).add(password).add(userName).add("\nDate of creation:" + date.toString())).append("\n");
         System.out.println("You type next information:\nEmail\t\tPassword\t\tName\n" + stringBuilder.toString() + "Please don`t forget it.");
-        return userName;
+        ResultSet resultSet = statement.executeQuery("SELECT userId FROM user WHERE email ='" + email + "'");
+        return resultSet.getInt(1);
     }
-    public static String logInSystem(String email) throws SQLException, IllegalArgumentException {
+    //(userId INT PRIMARY KEY AUTOINCREMENT, email STRING, password STRING, name STRING, dataOfRegistration String)
+
+    public static int logInSystem(String email) throws SQLException, IllegalArgumentException {
         ResultSet resultSet1 = statement.executeQuery("SELECT * FROM system");
-        String userName = null;
+        int userId = 0;
         while (resultSet1.next()) {
             String e = resultSet1.getString("email");
             if (email.equals(e)) {
@@ -69,7 +77,8 @@ public class DataBaseOperations {
                 String password = sc.nextLine();
                 String s = resultSet1.getString("password");
                 if (password.equals(s)) {
-                    userName = resultSet1.getString("name");
+                    String userName = resultSet1.getString("name");
+                    userId = resultSet1.getInt("userId");
                     System.out.println("Hello " + userName);
                     break;
                 } else {
@@ -81,31 +90,26 @@ public class DataBaseOperations {
                 throw new IllegalArgumentException();
             }
         }
-        return userName;
+        return userId;
     }
 
-    public static void createProduct(Integer id) throws SQLException, IllegalArgumentException {
+    public static void createProduct(int userId) throws SQLException, IllegalArgumentException {
 
         ResultSet resultSet1 = statement.executeQuery("SELECT * FROM product");
 
-        while (resultSet1.next()) {
-
-            String i = resultSet1.getString("id");
-            while ((id.toString()).equals(i)) {
-                System.out.println("Product with this id already in our system, write new id for your product.");
-                id = sc.nextInt();
-            }
-        }
+        int id = (resultSet1.getFetchSize() + 1);
         System.out.println("Please enter name of product.");
         String name = sc.nextLine();
         System.out.println("Please enter description.");
         String description = sc.nextLine();
         System.out.println("Please enter price of product.");
         Double price = sc.nextDouble();
+        java.util.Date date = new java.util.Date();
 
-        statement.executeUpdate("INSERT INTO product VALUES('" + id + "', '" + name + "','" + description + "','" + price + "')");
-
+        statement.executeUpdate("INSERT INTO product VALUES('" +id + "', '" + name + "','" + description + "','" + price + "','" + userId + "','" + date.toString() +  "')");
+       // id INTEGER, name STRING, description STRING, price DOUBLE, userId INT, dataOfCreation STRING
     }
+
     public static void showProducts() throws SQLException {
 
         ResultSet resultSet = statement.executeQuery("SELECT * FROM product");
@@ -121,34 +125,39 @@ public class DataBaseOperations {
         System.out.println(stringBuilder.toString());
     }
 
-    public static void orderHandler(String nameUser) throws SQLException, ClassNotFoundException {
+    public static void orderHandler(int userId) throws SQLException, ClassNotFoundException {
         double quantity = 1;
         System.out.println("Chose product which you want to buy(by name):");
         String nameProduct = sc.nextLine();
-        ResultSet price = statement.executeQuery("SELECT price FROM product WHERE name ='"+nameProduct+"'");
+        ResultSet price = statement.executeQuery("SELECT price FROM product WHERE name ='" + nameProduct + "'");
         double price1 = price.getDouble("price");
 
         System.out.println("How much you want to buy?");
         quantity = sc.nextDouble();
 
-
         java.util.Date date = new java.util.Date();
-        long i = Math.round(Math.random() * 1000);
 
-        String s = date.toString();
+        ResultSet set = statement.executeQuery("SELECT * FROM bill");
+        int i = set.getFetchSize()+1;
+
         double v = quantity * price1;
-        statement.executeUpdate("INSERT INTO bill VALUES('" + i  + "', '" + nameUser + "','"
-                + nameProduct + "','" + quantity + "','" + price + "','" + v + "','" + s + "')");
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM bill WHERE id ='"+i+"'");
+
+        statement.executeUpdate("INSERT INTO bill VALUES('" + userId + "', '" + i + "', '"
+                + nameProduct + "','" + quantity + "','" + price + "','" + v + "','" + date.toString() + "')");
+
+        //bill(userId INT, id INTEGER, nameProduct STRING, quantity DOUBLE, cost DOUBLE, val DOUBLE, dataOfOrder STRING)
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM bill WHERE id ='" + i + "'");
 
         String id = resultSet.getString("id");
-        String user = resultSet.getString("nameUser");
         String product = resultSet.getString("nameProduct");
         String quantity1 = resultSet.getString("quantity");
-        String cost = resultSet.getString("cost");
+        Double cost = resultSet.getDouble("cost");//не получаеться вытащить на экран значение, обсщитывает всё правильно.
         String val = resultSet.getString("val");
-        String data = resultSet.getString("data");
-        System.out.println("Bill№: "+id+"\nHello "+user+"\nYou order: "+product+"\nPrice\tQuantity\tCost\n"+cost+" * "+quantity1+" = "+val+"\n"+data);
+        String data = resultSet.getString("dataOfOrder");
+        String userId3 = resultSet.getString("userId");
+        ResultSet userName = statement.executeQuery("SELECT name FROM system WHERE userId='"+userId3+"' ");
+        String user = userName.getString("name");
+        System.out.printf("Bill№: %s\nHello %s\nYou order: %s\nPrice\tQuantity\tCost\n%s * %s = %s\n%s%n", id, user, product, cost.toString(), quantity1, val, data);
 
 
     }
