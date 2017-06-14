@@ -1,6 +1,5 @@
 package HomeWork11.controllers;
 
-import HomeWork11.entity.User;
 import HomeWork11.service.SignUpService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
