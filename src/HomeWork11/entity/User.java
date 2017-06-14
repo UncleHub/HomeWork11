@@ -1,6 +1,5 @@
 package HomeWork11.entity;
 
-
 public class User {
 
     String email;
@@ -45,6 +44,4 @@ public class User {
                 ", name='" + name + '\'' +
                 '}';
     }
-
-
 }

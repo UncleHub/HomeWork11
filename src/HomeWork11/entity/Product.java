@@ -1,19 +1,16 @@
 package HomeWork11.entity;
 
-
 public class Product {
 
     String nameProd;
     String descriptionProd;
     Double price;
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "nameProd='" + nameProd + '\'' +
-                ", descriptionProd='" + descriptionProd + '\'' +
-                ", price=" + price +
-                '}';
+    public Product(String nameProd, String descriptionProd, Double price) {
+
+        this.nameProd = nameProd;
+        this.descriptionProd = descriptionProd;
+        this.price = price;
     }
 
     public String getNameProd() {
@@ -40,10 +37,13 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String nameProd, String descriptionProd, Double price) {
 
-        this.nameProd = nameProd;
-        this.descriptionProd = descriptionProd;
-        this.price = price;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "nameProd='" + nameProd + '\'' +
+                ", descriptionProd='" + descriptionProd + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
