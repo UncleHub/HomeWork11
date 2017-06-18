@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="400.0" minWidth="600.0" snapToPixel="false"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeWork11.controllers.MainController">
+<AnchorPane minHeight="400.0" minWidth="600.0" snapToPixel="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeWork11.controllers.MainController">
    <children>
       <HBox fx:id="labelHello" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="570.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
@@ -28,7 +28,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
             </Button>
-            <Label fx:id="helloUser" prefHeight="25.0" prefWidth="150.0" text="Hello">
+            <Label fx:id="lblHello" prefHeight="25.0" prefWidth="150.0" text="hello">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
@@ -38,11 +38,11 @@
             </Label>
          </children>
       </HBox>
-      <TableView fx:id="tabele" layoutX="88.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="500.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+      <TableView fx:id="prodTable" layoutX="88.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="500.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
         <columns>
           <TableColumn fx:id="prodId" minWidth="-Infinity" prefWidth="50.0" text="№" />
           <TableColumn fx:id="prodName" prefWidth="160.0" text="Name of product" />
-            <TableColumn fx:id="prodDesr" prefWidth="260.0" text="Description" />
+            <TableColumn fx:id="prodDescr" prefWidth="260.0" text="Description" />
             <TableColumn fx:id="prodPrice" prefWidth="89.0" text="Price $" />
         </columns>
       </TableView>

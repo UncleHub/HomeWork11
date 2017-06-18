@@ -1,13 +1,10 @@
 package HomeWork11.dataBase;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.TreeMap;
+import HomeWork11.utils.Context;
+
+import java.sql.*;
+import java.util.*;
 
 public class DataBase {
 
@@ -40,15 +37,48 @@ public class DataBase {
     }
 
 
-    public boolean insert(String name, TreeMap<String,Object> userTree)  {
-        Date date = new Date();
+    public static boolean insert(String name, HashMap<String, Object> userMap) throws SQLException {
+
+        Set<Map.Entry<String, Object>> entries = userMap.entrySet();
+        StringJoiner columLables = new StringJoiner(",");
+        StringJoiner values = new StringJoiner("','", "'", "'");
+        for (Map.Entry<String, Object> oneOfItem : entries) {
+            columLables.add(oneOfItem.getKey());
+            values.add(oneOfItem.getValue().toString());
+        }
+
         try {
-            statement.executeQuery("INSERT INTO "+name+" (email, password, name, dataOfRegistration)" +
-                    "VALUES ('"+userTree.get("email")+"', '"+userTree.get("password")+"', '"+userTree.get("name")+"', '"+date.toString()+"');");
+            statement.executeQuery("INSERT INTO " + name + " ("+columLables+") VALUES ("+values+");");
+
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return  false;
         }
-        return true;
+        return select("user",userMap);
+    }
+
+    public static boolean select(String name, HashMap<String, Object> userMap) throws SQLException {
+
+        Set<Map.Entry<String, Object>> entries = userMap.entrySet();
+
+        StringJoiner allCondition = new StringJoiner(" AND ");
+        for (Map.Entry<String, Object> oneOfItem : entries) {
+            StringJoiner condition = new StringJoiner("='","" , "'");
+            condition.add(oneOfItem.getKey());
+            condition.add(oneOfItem.getValue().toString());
+            allCondition.add(condition.toString());
+        }
+
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + name + " WHERE " + allCondition + ";");
+
+        if (resultSet.next()){
+            Context instance = Context.getInstance();
+            instance.setUserId(resultSet.getInt("userId"));
+            return true;
+        }
+
+        return false;
     }
 }
+

@@ -1,10 +1,13 @@
 package HomeWork11;
 
+import HomeWork11.dataBase.DataBase;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class EntryPoint extends Application {
 
@@ -22,6 +25,17 @@ public class EntryPoint extends Application {
     }
 
     public static void main(String[] args) {
+        DataBase dataBase = new DataBase();
+        try {
+            dataBase.createConnection();
+            //dataBase.createTables();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         launch(args);
     }
+
 }

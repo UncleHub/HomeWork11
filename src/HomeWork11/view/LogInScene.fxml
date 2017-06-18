@@ -55,12 +55,12 @@
                         <Insets bottom="20.0" left="40.0" right="20.0" top="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="fildEmail" onAction="#setEmail" GridPane.columnIndex="1">
+                  <TextField fx:id="emailField" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                      </GridPane.margin>
                   </TextField>
-                  <PasswordField fx:id="fildPass" onAction="#setPass" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <PasswordField fx:id="passField" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                      </GridPane.margin>
