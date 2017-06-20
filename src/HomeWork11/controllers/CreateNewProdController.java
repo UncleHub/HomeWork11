@@ -5,6 +5,7 @@ import HomeWork11.service.AddProductService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AddProductController {
+public class CreateNewProdController {
 
 
     AddProductService addProductService = new AddProductService();
@@ -41,16 +42,21 @@ public class AddProductController {
 
     public void ok(ActionEvent actionEvent) {
 
-        double price =Double.parseDouble(priceField.getText());
-        Product product = new Product(nameField.getText(),descriptionField.getText(),price);
+        Double price = Double.parseDouble(priceField.getText());
+        Product product = new Product(nameField.getText(), descriptionField.getText(),price);
 
-        boolean isAdded = addProductService.addProd(product);
+        if (addProductService.addProd(product)) {
+            cancel(actionEvent);
+        }
 
     }
 
     public void cancel(ActionEvent actionEvent) {
 
-        stageNewProd.close();
+        Node source = ( Node ) actionEvent.getSource();
+        Scene scene = source.getScene();
+        Stage window = ( Stage ) scene.getWindow();
+        window.close();
 
     }
 

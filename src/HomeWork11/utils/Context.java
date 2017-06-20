@@ -1,10 +1,13 @@
 package HomeWork11.utils;
 
 
+import HomeWork11.entity.Product;
+import HomeWork11.entity.User;
+
 public class Context {
 
-    int userId;
-    int productId;
+    User user;
+    Product product;
 
    static Context instance;
 
@@ -18,27 +21,31 @@ public class Context {
         return instance;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-   /* @Override
+    public static void setInstance(Context instance) {
+        Context.instance = instance;
+    }
+
+    /* @Override
     public String toString() {
         return "Context{" +
-                "userId=" + userId +
-                ", productId=" + productId +
+                "user=" + user +
+                ", product=" + product +
                 '}';
     }*/
 }

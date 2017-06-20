@@ -11,10 +11,10 @@ public class LogInService {
         DataBase dataBase = new DataBase();
 
         HashMap<String,Object> userMap = new HashMap<>();
-        userMap.put("name",user.getName());
+        userMap.put("email",user.getEmail());
         userMap.put("password",user.getPassword());
 
-        return dataBase.select("user", userMap);
+        return dataBase.userExists(userMap);
 
     }
 }

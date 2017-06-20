@@ -1,12 +1,16 @@
 package HomeWork11.controllers;
 
 
+import HomeWork11.dataBase.DataBase;
+import HomeWork11.entity.Product;
+import HomeWork11.service.DeleteProdService;
 import HomeWork11.utils.Context;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 
@@ -17,21 +21,42 @@ public class MainController {
     @FXML
     public TableView prodTable;
     @FXML
-    public TableColumn prodId;
+    public TableColumn<Product, Integer> prodId;
     @FXML
-    public TableColumn prodName;
+    public TableColumn<Product, String> prodName;
     @FXML
-    public TableColumn prodDescr;
+    public TableColumn<Product, String> prodDescr;
     @FXML
-    public TableColumn prodPrice;
+    public TableColumn<Product, Double> prodPrice;
 
+    public void setLblHello() {
 
-    public void addProdToBasket(ActionEvent actionEvent){
+        lblHello.setText("Hello " + Context.getInstance().getUser().getName());
+    }
+
+    @FXML
+    public void initialize() {
+
+        prodId.setCellValueFactory(new PropertyValueFactory<Product, Integer>("idProd"));
+        prodName.setCellValueFactory(new PropertyValueFactory<Product, String>("nameProd"));
+        prodDescr.setCellValueFactory(new PropertyValueFactory<Product, String>("descriptionProd"));
+        prodPrice.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
+
+        prodTable.setItems(DataBase.setTableProd());
+
+        Product selectedProd = ( Product ) prodTable.getSelectionModel().getSelectedItems();
+
+        Context.getInstance().setProduct(selectedProd);
+
+    }
+
+    public void addProdToBasket(ActionEvent actionEvent) {
     }
 
     public void createNewProd(ActionEvent actionEvent) throws IOException {
-        AddProductController addProductController = new AddProductController();
-        addProductController.show();
+        CreateNewProdController createNewProdController = new CreateNewProdController();
+        createNewProdController.show();
+
     }
 
     public void userLogIn(ActionEvent actionEvent) throws IOException {
@@ -45,8 +70,18 @@ public class MainController {
     }
 
     public void userExit(ActionEvent actionEvent) {
-        Context.getInstance().setUserId(0);
+        Context.getInstance().setUser(null);
 
     }
 
+    public void updateProd(ActionEvent actionEvent) throws IOException {
+        UpdateProdController updateProdController = new UpdateProdController();
+        updateProdController.show();
+    }
+
+    public void deleteProd(ActionEvent actionEvent) {
+
+        DeleteProdService deleteService = new DeleteProdService();
+        deleteService.deleteProd(Context.getInstance().getProduct());
+    }
 }

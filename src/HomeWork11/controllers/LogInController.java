@@ -6,6 +6,7 @@ import HomeWork11.service.LogInService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -41,14 +42,16 @@ public class LogInController {
     public void pressOk(ActionEvent actionEvent) throws SQLException {
 
         User user = new User(emailField.getText(), passField.getText());
-        boolean isLogIn = logInService.register(user);
-        if (isLogIn) {
-            stageLogIn.close();
-        }
+        if (logInService.register(user)){
 
+            pressCancel(actionEvent);
+        }
     }
 
     public void pressCancel(ActionEvent actionEvent) {
-        stageLogIn.close();
+        Node source = (Node) actionEvent.getSource();
+        Scene scene = source.getScene();
+        Stage window = ( Stage ) scene.getWindow();
+        window.close();
     }
 }

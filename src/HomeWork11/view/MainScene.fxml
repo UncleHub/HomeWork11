@@ -9,9 +9,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="400.0" minWidth="600.0" snapToPixel="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeWork11.controllers.MainController">
+<AnchorPane minHeight="600.0" minWidth="800.0" snapToPixel="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeWork11.controllers.MainController">
    <children>
-      <HBox fx:id="labelHello" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="570.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+      <HBox fx:id="labelHello" layoutX="-44.0" layoutY="31.0" prefHeight="50.0" prefWidth="570.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
          <children>
             <Button fx:id="btnLogIn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#userLogIn" prefHeight="25.0" prefWidth="60.0" text="Log in">
                <HBox.margin>
@@ -38,13 +38,16 @@
             </Label>
          </children>
       </HBox>
-      <TableView fx:id="prodTable" layoutX="88.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="500.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+      <TableView fx:id="prodTable" layoutX="88.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="562.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="100.0">
         <columns>
-          <TableColumn fx:id="prodId" minWidth="-Infinity" prefWidth="50.0" text="№" />
-          <TableColumn fx:id="prodName" prefWidth="160.0" text="Name of product" />
-            <TableColumn fx:id="prodDescr" prefWidth="260.0" text="Description" />
-            <TableColumn fx:id="prodPrice" prefWidth="89.0" text="Price $" />
+          <TableColumn fx:id="prodId" minWidth="-Infinity" prefWidth="50.0" resizable="false" text="№" />
+          <TableColumn fx:id="prodName" prefWidth="128.0" resizable="false" text="Name of product" />
+            <TableColumn fx:id="prodDescr" prefWidth="292.0" text="Description" />
+            <TableColumn fx:id="prodPrice" prefWidth="109.0" resizable="false" text="Price $" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <HBox layoutX="174.0" layoutY="322.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
          <children>
@@ -53,12 +56,22 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnCreateNewProd" mnemonicParsing="false" onAction="#createNewProd" text="Create new product">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
-               </HBox.margin>
-            </Button>
          </children>
       </HBox>
+      <Button fx:id="btnCreateNewProd" layoutX="599.0" layoutY="241.0" mnemonicParsing="false" onAction="#createNewProd" text="Create new product" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="220.0">
+         <opaqueInsets>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </opaqueInsets>
+      </Button>
+      <Button fx:id="btnUpdate" layoutX="599.0" layoutY="288.0" mnemonicParsing="false" onAction="#updateProd" text="Update" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="260.0">
+         <opaqueInsets>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </opaqueInsets>
+      </Button>
+      <Button fx:id="btnDelete" layoutX="599.0" layoutY="331.0" mnemonicParsing="false" onAction="#deleteProd" text="Delete product" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="300.0">
+         <opaqueInsets>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </opaqueInsets>
+      </Button>
    </children>
 </AnchorPane>

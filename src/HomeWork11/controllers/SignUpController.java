@@ -1,11 +1,14 @@
 package HomeWork11.controllers;
 
 import HomeWork11.entity.User;
+import HomeWork11.exceptions.OnlineShopException;
 import HomeWork11.service.SignUpService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -13,7 +16,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 
 public class SignUpController {
@@ -21,12 +23,17 @@ public class SignUpController {
 
     @FXML
     public PasswordField passField;
+
     @FXML
     public TextField nameField;
+
     @FXML
     public TextField emailField;
+    @FXML
+    public Label message;
 
-    SignUpService signUpService;
+
+    SignUpService signUpService = new SignUpService();
     Stage stageSignUp = new Stage();
 
     public void showSignUpScene() throws IOException {
@@ -44,18 +51,28 @@ public class SignUpController {
 
 
     public void cancelPress(ActionEvent actionEvent) {
-        stageSignUp.close();
+
+        Node source = (Node) actionEvent.getSource();
+        Scene scene = source.getScene();
+        Stage window = ( Stage ) scene.getWindow();
+        window.close();
     }
 
-    public void okPress(ActionEvent actionEvent) throws SQLException {
+    public void okPress(ActionEvent actionEvent) {
 
         User user = new User(emailField.getText(), passField.getText(), nameField.getText());
 
-        boolean isRegistered;
-        isRegistered = signUpService.register(user);
+        boolean isRegistered = false;
+        try {
+            isRegistered = signUpService.register(user);
+        } catch (OnlineShopException e) {
+            message.setText( e.getMessage());
+
+        }
 
         if (isRegistered) {
-            stageSignUp.close();
-        }
+            cancelPress(actionEvent);
+
+        }else System.out.println("не удалось зарегистрировать юзверя");
     }
 }
