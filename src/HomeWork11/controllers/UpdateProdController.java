@@ -34,7 +34,7 @@ public class UpdateProdController {
 
         stageNewProd.setTitle("Update new product");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("../view/AddProductScene.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("../view/UpdateProdScene.fxml"));
         stageNewProd.initModality(Modality.APPLICATION_MODAL);
         Pane pane = ( Pane ) fxmlLoader.load();
         Scene scene = new Scene(pane);

@@ -11,6 +11,7 @@ public class DeleteProdService {
 
         HashMap<String,Object> productMap = new HashMap<>();
 
+
         productMap.put("nameProduct", product.getNameProd());
         productMap.put("description", product.getDescriptionProd());
         productMap.put("price", product.getPrice());

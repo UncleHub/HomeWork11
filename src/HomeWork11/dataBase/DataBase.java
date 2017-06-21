@@ -33,13 +33,13 @@ public class DataBase {
 
     public static void createTables() throws SQLException {
         statement.executeUpdate("DROP TABLE IF EXISTS user");
-        statement.executeUpdate("CREATE TABLE user(userId INTEGER PRIMARY KEY AUTOINCREMENT, email STRING UNIQUE, password STRING, name STRING, dataOfRegistration String)");
+        statement.executeUpdate("CREATE TABLE user(userId INTEGER PRIMARY KEY AUTOINCREMENT, email STRING UNIQUE, password STRING, name STRING, dataOfRegistration STRING)");
 
         statement.executeUpdate("DROP TABLE IF EXISTS product");
-        statement.executeUpdate("CREATE TABLE product(idProduct INTEGER PRIMARY KEY AUTOINCREMENT , nameProduct STRING, description STRING, price DOUBLE, userId INT, dataOfCreation STRING)");
+        statement.executeUpdate("CREATE TABLE product(idProduct INTEGER PRIMARY KEY AUTOINCREMENT , nameProduct STRING, description STRING, price DOUBLE, userId INTEGER, dataOfCreation STRING)");
 
         statement.executeUpdate("DROP TABLE IF EXISTS bill");
-        statement.executeUpdate("CREATE TABLE bill(idBill INTEGER PRIMARY KEY AUTOINCREMENT, userId INT, idProduct INT, quantity DOUBLE, price DOUBLE, total DOUBLE, dataOfOrder STRING)");
+        statement.executeUpdate("CREATE TABLE bill(idBill INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER, idProduct INTEGER, quantity DOUBLE, price DOUBLE, total DOUBLE, dataOfOrder STRING)");
     }
 
 
@@ -109,6 +109,7 @@ public class DataBase {
         }
         try {
             statement.execute("INSERT INTO product (" + columLables + ") VALUES (" + values + ");");
+            return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
 
@@ -161,8 +162,7 @@ public class DataBase {
     }
 
     public void deleteProd(HashMap<String, Object> productMap) {
-        //DELETE FROM Customers
-        //WHERE CustomerName='Alfreds Futterkiste';
+
         Set<Map.Entry<String, Object>> entries = productMap.entrySet();
 
         StringJoiner allCondition = new StringJoiner(", ");
@@ -180,6 +180,29 @@ public class DataBase {
             e.printStackTrace();
 
         }
+    }
+
+    public boolean getBill(HashMap<String, Object> productMap) {
+
+
+        Set<Map.Entry<String, Object>> entries = productMap.entrySet();
+        StringJoiner columLables = new StringJoiner(",");
+        StringJoiner values = new StringJoiner("','", "'", "'");
+        for (Map.Entry<String, Object> oneOfItem : entries) {
+            columLables.add(oneOfItem.getKey());
+            values.add(oneOfItem.getValue().toString());
+        }
+        try {
+            statement.execute("INSERT INTO bill (" + columLables + ") VALUES (" + values + ");");
+            return true;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return  false;
+        }
+        return  false;
     }
 }
 

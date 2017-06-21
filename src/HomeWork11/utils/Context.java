@@ -41,11 +41,11 @@ public class Context {
         Context.instance = instance;
     }
 
-    /* @Override
+    @Override
     public String toString() {
         return "Context{" +
                 "user=" + user +
                 ", product=" + product +
                 '}';
-    }*/
+    }
 }

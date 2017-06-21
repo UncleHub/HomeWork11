@@ -5,6 +5,7 @@ import HomeWork11.dataBase.DataBase;
 import HomeWork11.entity.Product;
 import HomeWork11.service.DeleteProdService;
 import HomeWork11.utils.Context;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -44,13 +45,17 @@ public class MainController {
 
         prodTable.setItems(DataBase.setTableProd());
 
-        Product selectedProd = ( Product ) prodTable.getSelectionModel().getSelectedItems();
+        DataBase.setTableProd().addListener(new ListChangeListener<Product>() {
+            @Override
+            public void onChanged(Change<? extends Product> c) {
+               prodTable.setItems(DataBase.setTableProd());
+            }
+        });
+
+        Product selectedProd = ( Product ) prodTable.getSelectionModel().getSelectedItem();
 
         Context.getInstance().setProduct(selectedProd);
 
-    }
-
-    public void addProdToBasket(ActionEvent actionEvent) {
     }
 
     public void createNewProd(ActionEvent actionEvent) throws IOException {
@@ -83,5 +88,17 @@ public class MainController {
 
         DeleteProdService deleteService = new DeleteProdService();
         deleteService.deleteProd(Context.getInstance().getProduct());
+    }
+
+    public void addProdToBasket(ActionEvent actionEvent) {
+        lblHello.setText(Context.getInstance().getProduct().toString());
+
+       /* AddProdToBasketService addProdToBasketService = new AddProdToBasketService();
+       if(addProdToBasketService.add(Context.getInstance().getProduct())){
+           lblHello.setText("you make order");
+       }else {
+           lblHello.setText("I`m sorry your order not handle.");
+       }*/
+
     }
 }
